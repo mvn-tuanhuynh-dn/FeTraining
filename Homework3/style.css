@@ -1,0 +1,82 @@
+.text-center{
+    text-align: center;
+}
+#text-pink{
+    color: pink;
+    font-size: 50px;
+}
+.content-blue{
+	color: blue;
+}
+.content-red{
+	color: red;
+}
+
+.parent p:nth-child(2n) {
+    color: red;
+}
+.parent p:nth-child(2n+1) {
+    color: green;
+    text-align: center;
+}
+
+.list-category>li:first-child{
+	color: red;
+}
+.list-category>li:last-child{
+	color: yellow;
+}
+.list-menu>li:nth-child(2n){
+	color: orange  ;
+}
+.list-menu>li:nth-child(2n+1){
+	color: purple;
+}
+.list-tab>li:nth-last-child(2){
+	color: red;
+}
+
+a[href]{
+	color: red;
+	font-size: 14px;	
+}
+a[href*="abc.com"]{
+	color: blue;
+	font-size: 16px;
+}
+a[href$=".org"]{
+	color: silver;
+	font-size: 18px;
+
+}
+a[href^="https"][href$=".com"]{
+	color: yellow;
+	font-size: 20px;
+
+}
+input[type="button"]{
+	width: 200px;
+	height: 50px;
+}
+
+*.car-item{
+	font-size:20px;
+}
+
+a.highlight:hover {
+    color: #ff0000;
+} 
+
+div.box-boder {
+    background-color: lightgrey;
+    width: 300px;
+    border: 15px solid green;
+    padding: 50px;
+    margin: 20px;
+}
+
+.box-boder::first-letter {
+    font-size: 100px;
+    color: orange;
+    font-weight: bold;
+}
