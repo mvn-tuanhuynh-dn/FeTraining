@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List Banner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Admin Page</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-images"></i></div>
+                            Banner Management
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Start Bootstrap
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">List Banner</h1>
+                    <a class="btn btn-primary" href="addBanner.html" role="button">Add Banner</a>
+                    <div class="card mb-4 mt-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            All Banner
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Topic Banner</th>
+                                        <th>Create At</th>
+                                        <th>Edit At</th>
+                                        <th>Image</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="banner-table">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+    var bannerList = [];
+
+    function renderBannerList(bannerList) {
+        $.ajax({
+            type: "GET",
+            url: " http://localhost:3000/banners",
+            beforeSend: function () {
+            $("#banner-table").html("Loading...");
+            },
+            dataType: "json",
+            success: function (data) {
+            var bannerListHtml = "";
+            data.forEach(function (item) {
+                bannerListHtml = bannerListHtml + `
+                <tr>
+                    <th>${(item.id)}</th>
+                    <th>${(item.title)}</th>
+                    <th>${(item.create_at)}</th>
+                    <th>${(item.edit_at)}</th>
+                    <th><img src="./img/${item.image}" alt="banner"></th>
+                    <th>
+                        <button type="button" class="btn btn-danger" onclick="deleteBanner(${item.id})"><i class="fas fa-trash-alt"></i> Delete</button>
+                        <a href="editBanner.html?id=${item.id}" class="btn btn-success"><i class="fas fa-pencil-alt mr-2"></i> Edit</a>
+                    </th>
+                </tr>
+                `;
+            });
+            $("#banner-table").html(bannerListHtml);
+            }
+        })
+    }
+
+    function deleteBanner(id) {
+        if (confirm("Are you sure to delete this banner?")) {
+            $.ajax({
+                type: "DELETE",
+                url: `http://localhost:3000/banners/${id}`,
+                dataType: "json"
+            })
+        }
+        return false;
+    }
+
+    renderBannerList(bannerList);
+    </script>
+</body>
+</html>
