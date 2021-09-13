@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List Banner</title>
+    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Edit Banner</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Banner Management
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Start Bootstrap
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Edit Banner</h1>
+                    <div class="edit-form" id="edit-form">
+                    </div>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script>
+        var banner = [];
+        let url_str = window.location.href;
+        let url = new URL(url_str);
+        let search_params = url.searchParams;
+        let id = search_params.get('id');  
+        function renderBannerEdit(banner) {         
+            var dataString = "id="+id;   
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/banners",
+                data: dataString,
+                error: function(){
+                    alert('Error');
+                },              
+                success: function(result){
+                    var editBannerHtml = "";
+                    $.each(result, function(i, element){  
+                        console.log(element);        
+                        editBannerHtml = `
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title banner">
+                            <label for="title">${element.title}</label>
+                            <div class="text-danger"></div>
+                            <input type="hidden" id="create-banner" name="create-banner" value="${element.create_at}">
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image" name="image" onchange="changeFileImage()">
+                            <label class="custom-file-label" for="image">${element.image}</label>
+                            <div class="text-danger"></div>                        
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3" id="edit-btn" onclick="editBanner()">Edit</button>
+                        <a type="button" class="btn btn-secondary mt-3" onclick="window.history.go(-1); return false;">Back</a>
+                        `;
+                    });
+                    $("#edit-form").html(editBannerHtml);                    
+                }
+            });
+        }
+
+        function changeFileImage() {
+            var fileName = $("#image").val().split("\\").pop();
+            $("#image").siblings(".custom-file-label").addClass("selected").html(fileName);
+        }
+
+        function getCurentDay() {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            return today = mm + '/' + dd + '/' + yyyy;
+        }
+
+        function editBanner() {
+            var isValid = true;
+            if ($("#title").val().length === 0) {
+                $("#title").addClass("is-invalid");
+                $("#title").next().next().html("Require Input Title");
+                isValid = false;
+            } else {
+                $("#title").removeClass("is-invalid");
+                $("#title").next().next().html("");
+            }
+
+            if ($("#image").val().length === 0) {
+                $("#image").addClass("is-invalid");
+                $("#image").next().next().html("Require Input Image Banner");
+                isValid = false;
+            } else {
+                $("#image").removeClass("is-invalid");
+                $("#image").next().next().html("");
+            }
+
+            if (isValid) {           
+                var item = {
+                    title: $("#title").val(),
+                    image: $("#image").val().split("\\").pop(),
+                    create_at: $("#create-banner").val(),
+                    edit_at: getCurentDay()
+                }
+
+                $.ajax({
+                    type: "PUT",
+                    url: `http://localhost:3000/banners/${id}`,
+                    dataType: "json",
+                    data: item,
+                    success: function (response) {
+                        window.location.href = "index.html";
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    }
+                });
+            }
+        }
+
+        renderBannerEdit(banner);
+    </script>
+</body> 
+</html>

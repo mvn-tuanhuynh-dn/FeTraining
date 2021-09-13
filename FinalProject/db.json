@@ -1,0 +1,59 @@
+{
+  "banners": [
+    {
+      "id": 1,
+      "title": "banner",
+      "image": "banner.jpg",
+      "create_at": "01/01/2020",
+      "edit_at": "01/01/2020"
+    },
+    {
+      "id": 2,
+      "title": "banner1",
+      "image": "banner1.jpg",
+      "create_at": "01/01/2020",
+      "edit_at": "01/01/2020"
+    },
+    {
+      "title": "Edit Banner 2",
+      "image": "banner6.jpg",
+      "create_at": "01/01/2020",
+      "edit_at": "09/12/2021",
+      "id": 3
+    },
+    {
+      "title": "Banner4",
+      "image": "banner4.jpg",
+      "create_at": "01/01/2020",
+      "edit_at": "09/12/2021",
+      "id": 4
+    },
+    {
+      "title": "Banner5",
+      "image": "banner3.jpg",
+      "create_at": "09/11/2021",
+      "edit_at": "09/11/2021",
+      "id": 5
+    },
+    {
+      "title": "Banner5",
+      "image": "banner3.jpg",
+      "create_at": "09/11/2021",
+      "edit_at": "09/11/2021",
+      "id": 7
+    },
+    {
+      "title": "Banner11",
+      "image": "banner6.jpg",
+      "create_at": "09/11/2021",
+      "edit_at": "09/11/2021",
+      "id": 8
+    },
+    {
+      "title": "dddd",
+      "image": "banner5.jpg",
+      "edit_at": "09/12/2021",
+      "id": 9
+    }
+  ]
+}
